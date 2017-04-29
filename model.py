@@ -7,7 +7,7 @@ from random import shuffle
 
 samples = []
 # Loads all the samples 
-with open('./data/driving_log.csv') as csvfile:
+with open('./data_small/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         samples.append(line)
@@ -23,7 +23,7 @@ train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 # stored in './data/IMG/'
 def process_image(source_path):
     filename = source_path.split('/')[-1] 
-    path = './data/IMG/' + filename
+    path = './data_small/IMG/' + filename
     image = cv2.imread(path)
     return image
 
@@ -96,19 +96,19 @@ model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
 
 model.add(Conv2D(24,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.25))
+model.add(SpatialDropout2D(0.20))
 
 model.add(Conv2D(36,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.25))
+model.add(SpatialDropout2D(0.20))
 
 model.add(Conv2D(48,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.25))
+model.add(SpatialDropout2D(0.20))
 
 model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(SpatialDropout2D(0.25))
+model.add(SpatialDropout2D(0.20))
 
 model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(SpatialDropout2D(0.25))
+model.add(SpatialDropout2D(0.20))
 
 model.add(Flatten())
 
