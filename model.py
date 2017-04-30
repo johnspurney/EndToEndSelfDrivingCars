@@ -7,7 +7,7 @@ from random import shuffle
 
 samples = []
 # Loads all the samples 
-with open('./data_small/driving_log.csv') as csvfile:
+with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         samples.append(line)
@@ -23,7 +23,7 @@ train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 # stored in './data/IMG/'
 def process_image(source_path):
     filename = source_path.split('/')[-1] 
-    path = './data_small/IMG/' + filename
+    path = './data/IMG/' + filename
     image = cv2.imread(path)
     return image
 
