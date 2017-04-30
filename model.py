@@ -41,7 +41,7 @@ def generator(samples, batch_size=32):
             for batch_sample in batch_samples:
                 # In order to find an optimal correction factor trigonometry
                 # and physics could be used, but experimentation works too
-                correction = 0.2
+                correction = 0.25
                 steering_center = float(batch_sample[3]) 
                 # Adjusted steering measurements for left and right
                 steering_left = steering_center + correction
@@ -78,7 +78,7 @@ train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
 
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Cropping2D, SpatialDropout2D
+from keras.layers import Flatten, Dense, Lambda, Cropping2D, SpatialDropout2D, Dropout
 from keras.layers.convolutional import Conv2D
 from keras.layers.pooling import MaxPooling2D
 
@@ -96,31 +96,33 @@ model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
 
 model.add(Conv2D(24,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.20))
+model.add(SpatialDropout2D(0.25))
 
 model.add(Conv2D(36,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.20))
+model.add(SpatialDropout2D(0.25))
 
 model.add(Conv2D(48,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.20))
+model.add(SpatialDropout2D(0.25))
 
 model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(SpatialDropout2D(0.20))
+model.add(SpatialDropout2D(0.25))
 
 model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(SpatialDropout2D(0.20))
+model.add(SpatialDropout2D(0.25))
 
 model.add(Flatten())
 
-model.add(Dense(100))
-model.add(Dense(50))
-model.add(Dense(10))
+model.add(Dropout(0.5))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(50, activation='relu'))
+model.add(Dense(10, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, steps_per_epoch=len(train_samples), \
                     validation_data=validation_generator, \
-                    validation_steps=len(validation_samples), epochs=5)
+                    validation_steps=len(validation_samples), epochs=8)
 
 model.save('model.h5')
 exit()
