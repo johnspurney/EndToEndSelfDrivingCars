@@ -96,33 +96,21 @@ model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
 
 model.add(Conv2D(24,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.25))
-
 model.add(Conv2D(36,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.25))
-
 model.add(Conv2D(48,(5,5), strides=(2,2), activation='relu'))
-model.add(SpatialDropout2D(0.25))
-
 model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(SpatialDropout2D(0.25))
-
 model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(SpatialDropout2D(0.25))
-
 model.add(Flatten())
-
 model.add(Dropout(0.5))
 model.add(Dense(100, activation='relu'))
 model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='relu'))
-model.add(Dropout(0.5))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, steps_per_epoch=len(train_samples), \
                     validation_data=validation_generator, \
-                    validation_steps=len(validation_samples), epochs=3)
+                    validation_steps=len(validation_samples), epochs=5)
 
 model.save('model.h5')
 exit()
