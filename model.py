@@ -50,7 +50,9 @@ def generator(samples, batch_size=32):
                 batch_sample_angles = [steering_center, steering_left, steering_right]
 
                 # Loop to reach center, left and right
-                for i in range(3):
+		# currently just using the center image hence range(1) modify if
+		# want to include others
+                for i in range(1):
                     source_path = batch_sample[i]
                     image = process_image(source_path)
                     images.append(image)
@@ -110,7 +112,7 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, steps_per_epoch=len(train_samples), \
                     validation_data=validation_generator, \
-                    validation_steps=len(validation_samples), epochs=1)
+                    validation_steps=len(validation_samples), epochs=5)
 
 model.save('model.h5')
 exit()
