@@ -109,10 +109,3 @@ model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(1))
 
-model.compile(loss='mse', optimizer='adam')
-model.fit_generator(train_generator, steps_per_epoch=len(train_samples), \
-                    validation_data=validation_generator, \
-                    validation_steps=len(validation_samples), epochs=5)
-
-model.save('model.h5')
-exit()
